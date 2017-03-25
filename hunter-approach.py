@@ -14,13 +14,14 @@ with open('test.txt', 'r') as openfile:
     for line in openfile:
         r = requests.get("https://api.hunter.io/v2/domain-search",params={"company":line, "api_key":api_key})
         for d in r.json()["data"]["emails"]:
-            email_list.append(d['value'])
+            email_list.append([d['value'],d['first_name'],d['last_name'],d['position']])
+
         r = requests.get("https://api.hunter.io/v2/domain-search", params={"company": line + " Singapore", "api_key": api_key})
         for d in r.json()["data"]["emails"]:
-            email_list.append(d['value'])
-    email_list=f7(email_list)
+            email_list.append([d['value'],d['first_name'],d['last_name'],d['position']])
+
 
 
 with open('output.txt', 'w') as writefile:
     for email in email_list:
-        writefile.write(email+"\n")
+        writefile.write(str(email)+"\n")
