@@ -1,3 +1,5 @@
+import csv
+
 import requests
 
 # From http://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-whilst-preserving-order
@@ -22,6 +24,14 @@ with open('test.txt', 'r') as openfile:
 
 
 
-with open('output.txt', 'w') as writefile:
+with open('output.csv', 'w') as writefile:
+    csvwriter = csv.writer(writefile, dialect='excel')
+    csvwriter.writerow(['Email', 'First Name', "Last Name", "Position"])
     for email in email_list:
-        writefile.write(str(email)+"\n")
+        csvwriter.writerow(email)
+
+# Eliminate duplicate rows and cleanup
+from more_itertools import unique_everseen
+
+with open('output.csv','r') as f, open('output_clean.csv','w') as out_file:
+    out_file.writelines(unique_everseen(f))
